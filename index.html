@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Amortización de Préstamo</title>
+</head>
+<body>
+<h2>Calcular Amortización de Préstamo</h2>
+<form id="Form">
+  <label for="monto">Monto del préstamo:</label>
+  <input type="number" id="monto" required><br><br>
+  
+  <label for="plazo">Plazo en meses:</label>
+  <input type="number" id="plazo" required><br><br>
+  
+  <label for="tasa">Tasa de interés mensual (%):</label>
+  <input type="number" id="tasa" step="0.01" required><br><br>
+  
+  <button type="submit">Calcular Amortización</button>
+</form>
+<br>
+<table id="amortizationTable">
+  <thead>
+    <tr>
+      <th>Periodo</th>
+      <th>Saldo</th>
+      <th>Interes</th>
+      <th>Abono</th>
+      <th>Pago</th>
+    </tr>
+  </thead>
+  <tbody id="amortizationBody">
+  </tbody>
+</table>
+
+<script>
+document.getElementById('Form').addEventListener('submit', function(event) {
+  event.preventDefault();
+  var monto = parseFloat(document.getElementById('monto').value);
+  var plazo = parseInt(document.getElementById('plazo').value);
+  var tasa = parseFloat(document.getElementById('tasa').value) / 100;
+
+  var saldo = monto;
+  var amortizationTable = document.getElementById('amortizationBody');
+  amortizationTable.innerHTML = '';
+
+  for (var periodo = 1; periodo <= plazo; periodo++) {
+    var interes = saldo * tasa;
+    var abono = (monto / plazo) + interes;
+    var pago = abono + interes;
+    
+    amortizationTable.innerHTML += '<tr><td>' + periodo + '</td><td>Q ' + saldo.toFixed(2) + '</td><td>Q ' + interes.toFixed(2) + '</td><td>Q ' + abono.toFixed(2) + '</td><td>Q ' + pago.toFixed(2) + '</td></tr>';
+
+    saldo = saldo - (monto / plazo);
+  }
+});
+</script>
+</body>
+</html>
